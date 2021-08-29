@@ -1,6 +1,7 @@
 ﻿using System;
 using Entidades;
 using Servicos;
+using System.Threading;
 
 namespace Banco
 {
@@ -25,20 +26,20 @@ namespace Banco
                     int escolha = int.Parse(Console.ReadLine());
                     if (escolha == 1)
                     {
-                        Console.WriteLine("Informe a conta: ");
+                        Console.Write("Informe a conta: ");
                         int conta = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Valor: ");
-                        int valor = int.Parse(Console.ReadLine());
-
+                        Console.Write("Valor: ");
+                        double valor = double.Parse(Console.ReadLine());
+                        Log.Deposito(conta, valor);
                         break;
                     }
                     else if (escolha == 2)
                     {
-                        Console.WriteLine("Informe a conta: ");
+                        Console.Write("Informe a conta: ");
                         int conta = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Valor: ");
-                        int valor = int.Parse(Console.ReadLine());
-
+                        Console.Write("Valor: ");
+                        double valor = double.Parse(Console.ReadLine());
+                        Log.Saque(conta, valor);
                         break;
                     }
                     else
@@ -61,15 +62,23 @@ namespace Banco
                         int tipo = int.Parse(Console.ReadLine());
                         if (tipo == 1)
                         {
+                            double saldo = 0;
                             Console.Write("Nome completo: ");
                             string nome = Console.ReadLine().Trim();
                             Console.Write("CPF: ");
-                            long cpf = long.Parse(Console.ReadLine());
-                            double saldo = 0;
-                            Console.WriteLine("----------------------");
-
+                            string cpf = Console.ReadLine();
+                            Console.Write("Haverar deposito inicial?");
+                            char dep = char.Parse(Console.ReadLine().ToUpper());
+                            if (dep == 'S')
+                            {
+                                Console.Write("Qual serar o valor: ");
+                                saldo = double.Parse(Console.ReadLine());
+                            }
+                            
                             ContaCorrente[] cc = new ContaCorrente[5];
-                            cc[0] = new ContaCorrente(nome, numeroConta, saldo, cpf);
+                            cc[c] = new ContaCorrente(numeroConta, nome, cpf, saldo);
+                            Log.AbriConta(cc);
+                            
                             c++;
 
 
@@ -79,12 +88,12 @@ namespace Banco
                             Console.Write("Razão Social: ");
                             string nome = Console.ReadLine().Trim();
                             Console.Write("CNPJ: ");
-                            long cnpj = long.Parse(Console.ReadLine());
+                            string cnpj = Console.ReadLine();
                             double saldo = 0;
                             Console.WriteLine("----------------------");
 
                             ContaJuridica[] cj = new ContaJuridica[5];
-                            cj[j] = new ContaJuridica(nome, numeroConta, saldo, cnpj);
+                            cj[j] = new ContaJuridica(numeroConta, nome, cnpj, saldo);
                             j++;
 
 
@@ -113,8 +122,8 @@ namespace Banco
                 }
             }
 
-            Log.Saque(20);
-
+            
+            
         }
     }
 }

@@ -8,15 +8,19 @@ namespace Entidades
     {
         public string Nome { get; set; }
         public int NumeroConta { get; set; }
-        public static double Saldo { get; protected set; }
+        public double Saldo { get; protected set; }
         public int Tipo { get; protected set; }
+        
 
-        public Conta(string nome, int numeroConta, double saldo)
+        protected Conta() { }
+        protected Conta(int numeroConta, string nome, double saldo)
         {
             Nome = nome;
             NumeroConta = numeroConta;
-            Saldo = saldo;
             Tipo = 0;
+            Saldo = saldo;
         }
+        
+        
     }
 }

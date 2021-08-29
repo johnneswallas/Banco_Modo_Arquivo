@@ -6,12 +6,13 @@ namespace Entidades
 {
     sealed class ContaJuridica : Conta
     {
-        public long Cnpj { get; set; }
+        public string Cnpj { get; set; }
 
-        public ContaJuridica(string nome, int numeroConta, double saldo, long cnpj) : base(nome, numeroConta, saldo)
+        public ContaJuridica(int numeroConta, string nome, string cnpj, double saldo) : base(numeroConta, nome, saldo)
         {
             Cnpj = cnpj;
             Tipo = 2;
+            Saldo = saldo;
         }
             
 

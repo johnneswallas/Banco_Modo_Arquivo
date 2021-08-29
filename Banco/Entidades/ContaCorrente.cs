@@ -6,12 +6,14 @@ namespace Entidades
 {
     sealed class ContaCorrente : Conta
     {
-        public long Cpf { get; set; }
+        public string Cpf { get; set; }
+        
 
-        public ContaCorrente(string nome, int numeroConta, double saldo, long cpf) :base(nome, numeroConta, saldo)
+        public ContaCorrente(int numeroConta, string nome, string cpf, double saldo) :base(numeroConta, nome, saldo)
         {
             Cpf = cpf;
             Tipo = 1;
+            Saldo = saldo;
         }
 
     }
