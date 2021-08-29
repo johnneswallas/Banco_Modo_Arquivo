@@ -14,7 +14,10 @@ namespace Entidades
             Tipo = 2;
             Saldo = saldo;
         }
-            
+        public override string ToString()
+        {
+            return $"{NumeroConta},{Nome},{Cnpj},{Saldo},{Tipo}";
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Entidades;
 using Servicos;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Banco
 {
@@ -31,7 +32,7 @@ namespace Banco
                         Console.Write("Valor: ");
                         double valor = double.Parse(Console.ReadLine());
                         Log.Deposito(conta, valor);
-                        break;
+                        //break;
                     }
                     else if (escolha == 2)
                     {
@@ -40,7 +41,7 @@ namespace Banco
                         Console.Write("Valor: ");
                         double valor = double.Parse(Console.ReadLine());
                         Log.Saque(conta, valor);
-                        break;
+                        //break;
                     }
                     else
                     {
@@ -75,34 +76,45 @@ namespace Banco
                                 saldo = double.Parse(Console.ReadLine());
                             }
                             
-                            ContaCorrente[] cc = new ContaCorrente[5];
-                            cc[c] = new ContaCorrente(numeroConta, nome, cpf, saldo);
-                            Log.AbriConta(cc);
+                            ContaCorrente[] cc = new ContaCorrente[1];
+                            cc[0] = new ContaCorrente(numeroConta, nome, cpf, saldo);
+                            Log.AbrirConta(cc);
                             
-                            c++;
-
-
                         }
                         else if (tipo == 2)
                         {
+                            double saldo = 0;
                             Console.Write("Razão Social: ");
                             string nome = Console.ReadLine().Trim();
                             Console.Write("CNPJ: ");
                             string cnpj = Console.ReadLine();
-                            double saldo = 0;
-                            Console.WriteLine("----------------------");
-
-                            ContaJuridica[] cj = new ContaJuridica[5];
-                            cj[j] = new ContaJuridica(numeroConta, nome, cnpj, saldo);
-                            j++;
-
-
+                            Console.Write("Haverar deposito inicial? ");
+                            char dep = char.Parse(Console.ReadLine().ToUpper());
+                            if (dep == 'S')
+                            {
+                                Console.Write("Qual serar o valor: ");
+                                saldo = double.Parse(Console.ReadLine());
+                            }
+                            ContaJuridica[] cj = new ContaJuridica[1];
+                            cj[0] = new ContaJuridica(numeroConta, nome, cnpj, saldo);
+                            Log.AbrirConta(cj);
+                            
+                            
                         }
                     }
                     else if (escolha == 2)
                     {
+                        Console.Write("Informe o número da conta: ");
+                        int numero = int.Parse(Console.ReadLine());
+                        Console.Write("Deseja continuar? ");
+                        char cont = char.Parse(Console.ReadLine().ToUpper());
+                        if (cont == 'S')
+                        {
+                            Log.ExcluirConta(numero);
+                            //break;
+                        }
 
-                        break;
+                        
                     }
                     else
                     {

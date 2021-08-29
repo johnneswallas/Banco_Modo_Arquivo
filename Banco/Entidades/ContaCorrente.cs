@@ -16,5 +16,10 @@ namespace Entidades
             Saldo = saldo;
         }
 
+        public override string ToString()
+        {
+            return $"{NumeroConta},{Nome},{Cpf},{Saldo},{Tipo}";
+        }
+
     }
 }
