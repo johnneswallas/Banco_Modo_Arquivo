@@ -13,93 +13,106 @@ namespace Servicos
     {
 
         private static string arquivo = @"C:\bancojw.txt";
+        private static ITaxa taxa = new Taxa();
 
         public static void Saque(int numeroConta, double valor)
         {
-            int pos = 1;
             bool ero = false;
             StreamReader sr = new StreamReader(arquivo);
-            int qtlinha = File.ReadAllLines(arquivo).Length;
-            string[] dado = new string[qtlinha];
+            List<string> dado = new List<string>();
             while (!(sr.EndOfStream))
             {
-                bool teste = false;
                 string[] temp = sr.ReadLine().Split(",");
-                int numero = int.Parse(temp[0]);
-                string nome = temp[1];
-                string doc = temp[2];
-                double saldo = double.Parse(temp[3].Replace(".", ","));
-                int tipo = int.Parse(temp[4]);
+                if (temp != null)
+                {
+                    int numero = int.Parse(temp[0]);
+                    string nome = temp[1];
+                    string doc = temp[2];
+                    double saldo = double.Parse(temp[3].Replace(".", ","));
+                    int tipo = int.Parse(temp[4]);
 
-                if (numero == numeroConta)
-                {
-                    saldo -= valor;
-                    dado[0] = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
-                    ero = true;
+                    if (numero == numeroConta)
+                    {
+                        double teste = taxa.Saque(valor);
+                        saldo -= valor + teste;
+                        string dados = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
+                        dado.Add(dados);
+                        ero = true;
+                    }
+                    else
+                    {
+                        string dadosCliente = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
+                        dado.Add(dadosCliente);
+                    }
                 }
-                else
-                {
-                    dado[pos] = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
-                    pos++;
-                }
+                
             }
-            Console.WriteLine("Aguarde a cédulas sairem...");
-            Thread.Sleep(500);
-            Console.WriteLine("--------------------------");
             sr.Close();
             File.WriteAllLines(arquivo, dado);
-
             if (ero == false)
             {
                 Console.WriteLine("Conta não encontrada, tente novamente.");
                 Console.WriteLine("----------------------");
             }
+            else
+            {
+                Console.WriteLine("Aguarde a cédulas sairem...");
+                Thread.Sleep(500);
+                Console.WriteLine("--------------------------");
+            }
+
+            
         }
         public static void Deposito(int numeroConta, double valor)
         {
-            int pos = 1;
+            
             bool ero = false;
             StreamReader sr = new StreamReader(arquivo);
-            int qtlinha = File.ReadAllLines(arquivo).Length;
-            string[] dado = new string[qtlinha];
+            
+            List<string> dado = new List<string>();
+
             while (!(sr.EndOfStream))
             {
-                bool teste = false;
                 string[] temp = sr.ReadLine().Split(",");
-                int numero = int.Parse(temp[0]);
-                string nome = temp[1];
-                string doc = temp[2];
-                double saldo = double.Parse(temp[3].Replace(".", ","));
-                int tipo = int.Parse(temp[4]);
+                if (temp != null)
+                {
+                    int numero = int.Parse(temp[0]);
+                    string nome = temp[1];
+                    string doc = temp[2];
+                    double saldo = double.Parse(temp[3].Replace(".", ","));
+                    int tipo = int.Parse(temp[4]);
+                    string dados = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
 
-                if (numero == numeroConta)
-                {
-                    saldo += valor;
-                    dado[0] = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
-                    ero = true;
-                }
-                else
-                {
-                    dado[pos] = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
-                    pos++;
+                    if (numero == numeroConta)
+                    {
+                        saldo += valor;
+                        dado.Add(dados);
+                        ero = true;
+                    }
+                    else
+                    {
+                        dado.Add(dados);
+                    }
                 }
             }
-            Console.WriteLine("Aguarde o comprovante sair...");
-            Thread.Sleep(500);
-            Console.WriteLine("--------------------------");
             sr.Close();
             File.WriteAllLines(arquivo, dado);
-
             if (ero == false)
             {
                 Console.WriteLine("Conta não encontrada, tente novamente.");
                 Console.WriteLine("----------------------");
             }
+            else
+            {
+                Console.WriteLine("Aguarde o comprovante sair...");
+                Thread.Sleep(500);
+                Console.WriteLine("--------------------------");
+            }
 
         }
 
 
-        public static void AbrirConta(ContaCorrente[] dados)
+        public static void AbrirConta(List<ContaCorrente> dados)
         {
             StreamWriter sw = File.AppendText(arquivo);
             foreach (ContaCorrente obj in dados)
@@ -118,7 +131,7 @@ namespace Servicos
             Thread.Sleep(500);
             Console.WriteLine("Tudo pronto.\n----------------------");
         }
-        public static void AbrirConta(ContaJuridica[] dados)
+        public static void AbrirConta(List<ContaJuridica> dados)
         {
             StreamWriter sw = File.AppendText(arquivo);
             foreach (ContaJuridica obj in dados)
@@ -140,29 +153,29 @@ namespace Servicos
 
         public static void ExcluirConta(int numeroConta)
         {
-            int pos = 0;
             bool ero = false;
-            StreamReader sr = new StreamReader(arquivo);
-            int qtlinha = File.ReadAllLines(arquivo).Length;
-            string[] dado = new string[qtlinha-1];
+            StreamReader sr = new StreamReader(arquivo);   
+            List<string> dado = new List<string>();
             while (!(sr.EndOfStream))
             {
-                
                 string[] temp = sr.ReadLine().Split(",");
-                int numero = int.Parse(temp[0]);
-                string nome = temp[1];
-                string doc = temp[2];
-                double saldo = double.Parse(temp[3].Replace(".", ","));
-                int tipo = int.Parse(temp[4]);
+                if (temp != null)
+                {
+                    int numero = int.Parse(temp[0]);
+                    string nome = temp[1];
+                    string doc = temp[2];
+                    double saldo = double.Parse(temp[3].Replace(".", ","));
+                    int tipo = int.Parse(temp[4]);
 
-                if (numero == numeroConta)
-                {
-                    ero = true;
-                }
-                else
-                {
-                    dado[pos] = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
-                    pos++;
+                    if (numero == numeroConta)
+                    {
+                        ero = true;
+                    }
+                    else
+                    {
+                        string dados = $"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}";
+                        dado.Add(dados);
+                    }
                 }
             }
             Console.WriteLine("Aguarde...\nConta localizada");
@@ -177,6 +190,7 @@ namespace Servicos
                 Console.WriteLine("----------------------");
             }
         }
+
 
     }
 

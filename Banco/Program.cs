@@ -10,8 +10,7 @@ namespace Banco
     {
         static void Main(string[] args)
         {
-            int c = 0;
-            int j = 0;
+            
 
             int N = 1;
 
@@ -32,7 +31,7 @@ namespace Banco
                         Console.Write("Valor: ");
                         double valor = double.Parse(Console.ReadLine());
                         Log.Deposito(conta, valor);
-                        //break;
+                        
                     }
                     else if (escolha == 2)
                     {
@@ -41,7 +40,7 @@ namespace Banco
                         Console.Write("Valor: ");
                         double valor = double.Parse(Console.ReadLine());
                         Log.Saque(conta, valor);
-                        //break;
+                        
                     }
                     else
                     {
@@ -76,8 +75,9 @@ namespace Banco
                                 saldo = double.Parse(Console.ReadLine());
                             }
                             
-                            ContaCorrente[] cc = new ContaCorrente[1];
-                            cc[0] = new ContaCorrente(numeroConta, nome, cpf, saldo);
+                            List<ContaCorrente> cc = new List<ContaCorrente>();
+                            ContaCorrente dados = new ContaCorrente(numeroConta, nome, cpf, saldo);
+                            cc.Add(dados);
                             Log.AbrirConta(cc);
                             
                         }
@@ -95,11 +95,12 @@ namespace Banco
                                 Console.Write("Qual serar o valor: ");
                                 saldo = double.Parse(Console.ReadLine());
                             }
-                            ContaJuridica[] cj = new ContaJuridica[1];
-                            cj[0] = new ContaJuridica(numeroConta, nome, cnpj, saldo);
-                            Log.AbrirConta(cj);
-                            
-                            
+                            List<ContaJuridica> cj = new List<ContaJuridica>();
+                            ContaJuridica dados = new ContaJuridica(numeroConta, nome, cnpj, saldo);
+                            cj.Add(dados);
+                            Log.AbrirConta(cj); ;
+
+
                         }
                     }
                     else if (escolha == 2)
@@ -111,7 +112,7 @@ namespace Banco
                         if (cont == 'S')
                         {
                             Log.ExcluirConta(numero);
-                            //break;
+                            
                         }
 
                         
