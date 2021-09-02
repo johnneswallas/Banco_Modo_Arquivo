@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Linq;
 using Entidades;
 using System.Globalization;
 using System.Threading;
+
+
 
 namespace Servicos
 {
@@ -45,7 +45,7 @@ namespace Servicos
                         dado.Add(dadosCliente);
                     }
                 }
-                
+
             }
             sr.Close();
             File.WriteAllLines(arquivo, dado);
@@ -61,14 +61,14 @@ namespace Servicos
                 Console.WriteLine("--------------------------");
             }
 
-            
+
         }
         public static void Deposito(int numeroConta, double valor)
         {
-            
+
             bool ero = false;
             StreamReader sr = new StreamReader(arquivo);
-            
+
             List<string> dado = new List<string>();
 
             while (!(sr.EndOfStream))
@@ -110,7 +110,36 @@ namespace Servicos
             }
 
         }
+        public static void Saldo(int numeroConta)
+        {
+            bool ero = false;
+            StreamReader sr = new StreamReader(arquivo);
+            while (!(sr.EndOfStream))
+            {
+                string[] temp = sr.ReadLine().Split(",");
+                if (temp != null)
+                {
+                    int numero = int.Parse(temp[0]);
+                    string nome = temp[1];
+                    string doc = temp[2];
+                    double saldo = double.Parse(temp[3].Replace(".", ","));
+                    int tipo = int.Parse(temp[4]);
 
+                    if (numero == numeroConta)
+                    {
+                        Console.WriteLine($"Número da conta: {numero}\nNome: {nome}\nDocumento: {doc}\nSaldo: {saldo}\nTipo: {tipo}");
+                        ero = true;
+                        break;
+                    }
+
+                }
+            }
+            if(ero == false)
+            {
+                Console.WriteLine("Conta não encontrada, tente novamente.");
+                Console.WriteLine("----------------------");
+            }
+        }
 
         public static void AbrirConta(List<ContaCorrente> dados)
         {
@@ -123,8 +152,9 @@ namespace Servicos
                 double saldo = obj.Saldo;
                 int tipo = obj.Tipo;
 
-                sw.WriteLine($"{numero},{nome},{doc},{saldo},{tipo}");
+                sw.WriteLine($"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}");
                 sw.Close();
+                Console.WriteLine($"Número da conta: {numero}\nNome: {nome}\nDocumento: {doc}\nSaldo: {saldo}\nTipo: {tipo}");
                 break;
             }
             Console.WriteLine("aguarde um instante.");
@@ -141,16 +171,15 @@ namespace Servicos
                 string doc = obj.Cnpj;
                 double saldo = obj.Saldo;
                 int tipo = obj.Tipo;
-                sw.WriteLine($"{numero},{nome},{doc},{saldo},{tipo}");
+                sw.WriteLine($"{numero},{nome},{doc},{saldo.ToString("f2", CultureInfo.InvariantCulture)},{tipo}");
                 sw.Close();
+                Console.WriteLine($"Número da conta: {numero}\nNome: {nome}\nDocumento: {doc}\nSaldo: {saldo}\nTipo: {tipo}");
                 break;
             }
             Console.WriteLine("aguarde um instante.");
             Thread.Sleep(500);
             Console.WriteLine("Tudo pronto.\n----------------------");
         }
-
-
         public static void ExcluirConta(int numeroConta)
         {
             bool ero = false;
@@ -191,7 +220,38 @@ namespace Servicos
             }
         }
 
+        public static List<string> Contas()
+        {
+            StreamReader sr = new StreamReader(arquivo);
+            List<string> contas = new List<string>();
+            while (!(sr.EndOfStream))
+            {
+                string[] temp = sr.ReadLine().Split(",");
+                if (temp != null)
+                {
+                    int numero = int.Parse(temp[0]);
+                    string nome = temp[1];
+                    string doc = temp[2];
+                    double saldo = double.Parse(temp[3].Replace(".", ","));
+                    int tipo = int.Parse(temp[4]);
+                    string dados = $"{numero},{nome},{doc},{saldo},{tipo}";
+                    contas.Add(dados);
+                }
+            }
+            return contas;
+        }
+        public static void Print<T>(string menssagem, IEnumerable<T> collection)
+        {
+            Console.WriteLine(menssagem);
+            foreach (T obj in collection)
+            {
+                Console.WriteLine(obj);
+            }
+            Console.WriteLine();
 
+        }
+
+        
     }
 
 

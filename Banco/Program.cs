@@ -1,8 +1,9 @@
 ﻿using System;
 using Entidades;
 using Servicos;
-using System.Threading;
+using System.Linq;
 using System.Collections.Generic;
+
 
 namespace Banco
 {
@@ -10,11 +11,9 @@ namespace Banco
     {
         static void Main(string[] args)
         {
-            
-
             int N = 1;
 
-            Console.WriteLine("Bem vindo ao banco JW");
+            /*Console.WriteLine("Bem vindo ao banco JW");
             while (N < 2)
             {
                 Console.WriteLine("1 - Movimentação\n2 - Manutenção De Conta\n3 - Sair ");
@@ -40,7 +39,18 @@ namespace Banco
                         Console.Write("Valor: ");
                         double valor = double.Parse(Console.ReadLine());
                         Log.Saque(conta, valor);
-                        
+                        Console.WriteLine("Deseja ver o saldo?");
+                        char saldo = char.Parse(Console.ReadLine().ToUpper());
+                        if (saldo == 'S')
+                        {
+                            Log.Saldo(conta);
+                        }
+                        else if (saldo == 'N') { }
+                        else 
+                        {
+                            Console.WriteLine("Opção invalida tente novamente.");
+                            Console.WriteLine();
+                        }
                     }
                     else
                     {
@@ -124,19 +134,33 @@ namespace Banco
                     }
 
                 }
-                else if (opc == 3)
-                {
-                    break;
-                }
+                else if (opc == 3){break;}
                 else
                 {
                     Console.WriteLine("Opção invalida tente novamente.");
                     Console.WriteLine();
                 }
+                Console.WriteLine("Deseja fazer mais alguma operação?");
+                char ope = char.Parse(Console.ReadLine().ToUpper());
+                if (ope == 'S') {break;}
+                else if (ope == 'N') { continue; }
+                else
+                {
+                    Console.WriteLine("Opção invalida tente novamente.");
+                    Console.WriteLine();
+                }
+                
+            }*/
+            
+            List<string> contas = Log.Contas();
+            
+
+            for (int i = 0; i < contas.Count; i++)
+            {
+                Console.WriteLine($"Nome: {contas[1]}\nDocúmento: {contas[3]}\n");
             }
 
-            
-            
+
         }
     }
 }
